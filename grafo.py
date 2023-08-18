@@ -1,3 +1,6 @@
+from matriz import Matriz
+
+
 class Vertice:
     def __init__(self, id: str, valor: str):
         self.id = id
@@ -12,7 +15,7 @@ class Grafo:
     def __init__(self):
         self.vertices = list()
         self.arestas  = list()
-        self.mtz_adj  = dict()
+        self.mtz_adj  = Matriz()
 
     def get_ordem(self):
         return len(self.vertices)
@@ -36,6 +39,7 @@ class Grafo:
     def remove_v(self, v: Vertice):
         self.remove_v_pelo_indice(self.vertices.index(v))
 
+    # O(n^2), n == qtd vértices no grafo
     def remove_v_pelo_indice(self, v_idx: int):
         i = 0
         len_vertices = self.get_ordem()
@@ -50,6 +54,7 @@ class Grafo:
 
         # Na matriz de adjacência, decrementa o índice de todos 
         # os vértices posteriores ao que se deseja remover
+        # ANOTAÇÃO: TEM COMO MELHORAR USANDO ITERAÇÃO SOBRE O DICIONÁRIO
         i = v_idx + 1
         while i < len_vertices:
             j = v_idx + 1
@@ -60,6 +65,15 @@ class Grafo:
                     self.mtz_adj[(j - 1, i - 1)] = self.mtz_adj.pop((j, i))
                 j += 1
             i += 1
+
+        for key, value in self.mtz_adj:
+            # key   == (i, j)
+            # value == [a1...an]
+            if v_idx in key:
+                self.mtz_adj.pop(key)
+                continue
+
+
 
         # Remove o vértice da lista de vértices
         self.vertices[v_idx].pop(v_idx)
