@@ -1,4 +1,4 @@
-from matriz import Matriz
+from matriz import MatrizAdjacencia
 
 
 class Vertice:
@@ -13,70 +13,68 @@ class Aresta:
 
 class Grafo:
     def __init__(self):
-        self.vertices = list()
-        self.arestas  = list()
-        self.mtz_adj  = Matriz()
+        self.vertices = []
+        self.arestas  = []
+        self.mtz_adj  = MatrizAdjacencia()
 
-    def get_ordem(self):
+    def get_ordem(self) -> int:
         return len(self.vertices)
 
-    def get_tamanho(self):
+    def get_tamanho(self) -> int:
         return len(self.arestas)
 
-    def vertices(self):
+    def vertices(self) -> list:
         return self.vertices
 
-    def arestas(self):
+    def arestas(self) -> list:
         return self.arestas
 
-    def insere_v(self, v: Vertice):
+    def insere_v(self, v: Vertice) -> None:
         self.vertices.append(v)
 
-    def cria_e_insere_v(self, id: str, valor: str):
+    def cria_e_insere_v(self, id: str, valor: str) -> None:
         v = Vertice(id, valor)
         self.insere_v(v)
 
-    def remove_v(self, v: Vertice):
+    def remove_v(self, v: Vertice) -> None:
         self.remove_v_pelo_indice(self.vertices.index(v))
 
-    # O(n^2), n == qtd vértices no grafo
-    def remove_v_pelo_indice(self, v_idx: int):
-        i = 0
-        len_vertices = self.get_ordem()
+    def remove_v_pelo_indice(self, v_ind: int) -> None:
+        self.mtz_adj.pop_lin(v_ind)
+        self.mtz_adj.pop_col(v_ind)
+        self.vertices.pop(v_ind)
 
-        # Remove todas as adjacências relacionadas ao vértice
-        while i < len_vertices:
-            if  self.mtz_adj.get((v_idx, i)) != None:
-                self.mtz_adj.pop((v_idx, i))
-            if  self.mtz_adj.get((i, v_idx)) != None:
-                self.mtz_adj.pop((i, v_idx))
-            i += 1
+    def cria_e_insere_a(self, id: str, valor: str, u: Vertice, v: Vertice) -> None:
+        a = Aresta(id, valor)
+        self.insere_a(a, self.vertices.index(u), self.vertices.index(v))
 
-        # Na matriz de adjacência, decrementa o índice de todos 
-        # os vértices posteriores ao que se deseja remover
-        # ANOTAÇÃO: TEM COMO MELHORAR USANDO ITERAÇÃO SOBRE O DICIONÁRIO
-        i = v_idx + 1
-        while i < len_vertices:
-            j = v_idx + 1
-            while j < len_vertices:
-                if  self.mtz_adj.get((i, j)) != None:
-                    self.mtz_adj[(i - 1, j - 1)] = self.mtz_adj.pop((i, j))
-                if  self.mtz_adj.get((j, i)) != None:
-                    self.mtz_adj[(j - 1, i - 1)] = self.mtz_adj.pop((j, i))
-                j += 1
-            i += 1
+    def cria_e_insere_a(self, id: str, valor: str, u_ind: int, v_ind: int) -> None:
+        a = Aresta(id, valor)
+        self.insere_a(a, u_ind, v_ind)
 
-        for key, value in self.mtz_adj:
-            # key   == (i, j)
-            # value == [a1...an]
-            if v_idx in key:
-                self.mtz_adj.pop(key)
-                continue
+    def insere_a(self, a: Aresta, u: Vertice, v: Vertice) -> None:
+        self.insere_a(a, self.vertices.index(u), self.vertices.index(v))
 
+    def insere_a(self, a: Aresta, u_ind: int, v_ind: int) -> None:
+        a_ind = self.get_tamanho()
+        self.arestas.append(a)
+        self.mtz_adj[u_ind][v_ind].append(a_ind)
 
+    def remove_a(self, a: Aresta) -> None:
+        self.remove_a_pelo_indice(self.arestas.index(a))
 
-        # Remove o vértice da lista de vértices
-        self.vertices[v_idx].pop(v_idx)
+    def remove_a_pelo_indice(self, a_ind: int) -> None:
+        for lin in self.mtz_adj:
+            for col in lin:
+                i = 0
+                while i < len(col):
+                    if col[i] == a_ind:
+                        col.pop(a_ind)
+                    elif col[i] > a_ind:
+                        col[i] -= 1
+                        i += 1
+        self.arestas.pop(a_ind)
+
 
 def main():
     pass
