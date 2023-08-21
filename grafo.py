@@ -29,6 +29,7 @@ class Grafo:
     def arestas(self) -> list:
         return self.arestas
 
+    # Inserção e remoção de vértices
     def insere_v(self, v: Vertice) -> None:
         self.vertices.append(v)
 
@@ -44,6 +45,7 @@ class Grafo:
         self.mtz_adj.pop_col(v_ind)
         self.vertices.pop(v_ind)
 
+    # Inserção e remoção de arestas
     def cria_e_insere_a(self, id: str, valor: str, u: Vertice, v: Vertice) -> None:
         a = Aresta(id, valor)
         self.insere_a(a, self.vertices.index(u), self.vertices.index(v))
@@ -74,6 +76,19 @@ class Grafo:
                         col[i] -= 1
                         i += 1
         self.arestas.pop(a_ind)
+
+    def adj(self, v: Vertice) -> set:
+        return self.adj_pelo_indice(self.vertices.index(v))
+
+    def adj_pelo_indice(self, v_ind: int) -> set:
+        l = set()
+        i = 0
+        ordem = self.get_ordem()
+        while i < ordem:
+            if len(self.mtz_adj[v_ind][i]) > 0 or len(self.mtz_adj[i][v_ind]) > 0:
+                l.add(self.vertices[i])
+            i += 1
+        return l
 
 
 def main():
