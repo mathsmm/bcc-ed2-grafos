@@ -57,7 +57,7 @@ class Grafo:
     def insere_a(self, a: Aresta, u: Vertice, v: Vertice) -> None:
         self.insere_a(a, self.vertices.index(u), self.vertices.index(v))
 
-    def insere_a(self, a: Aresta, u_ind: int, v_ind: int) -> None:
+    def insere_a_pelos_indices(self, a: Aresta, u_ind: int, v_ind: int) -> None:
         a_ind = self.get_tamanho()
         self.arestas.append(a)
         self.mtz_adj[u_ind][v_ind].append(a_ind)
@@ -89,6 +89,12 @@ class Grafo:
                 l.add(self.vertices[i])
             i += 1
         return l
+
+    def get_a(self, u: Vertice, v: Vertice):
+        return self.get_a_pelos_indices(self.vertices.index(u), self.vertices.index(v))
+
+    def get_a_pelos_indices(self, u_ind: int, v_ind: int):
+        pass
 
 
 def main():
