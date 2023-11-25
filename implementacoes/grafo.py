@@ -1,32 +1,31 @@
 from vertice_aresta import Vertice, Aresta
 
-
 class Grafo:
     def __init__(self):
         self.vertices = []
         self.arestas = []
 
-    def get_ordem(self):
+    def get_ordem(self) -> int:
         return len(self.vertices)
 
-    def get_tamanho(self):
+    def get_tamanho(self) -> int:
         return len(self.arestas)
 
-    def vertices(self):
+    def vertices(self) -> list:
         return self.vertices
 
-    def arestas(self):
+    def arestas(self) -> list:
         return self.arestas
 
     # Inserção e remoção de vértices
-    def insere_v(self, v: Vertice):
+    def insere_v(self, v: Vertice) -> None:
         self.vertices.append(v)
 
-    def cria_e_insere_v(self, id: str, valor: str):
+    def cria_e_insere_v(self, id: str, valor: str) -> None:
         v = Vertice(id, valor)
         self.insere_v(v)
 
-    def remove_v(self, v: Vertice):
+    def remove_v(self, v: Vertice) -> None:
         self.vertices.remove(v)
 
         for vert_adj in v.adj.keys():
@@ -38,7 +37,7 @@ class Grafo:
 
 
     # Inserção e remoção de arestas
-    def insere_a(self, a: Aresta, u: Vertice, v: Vertice):
+    def insere_a(self, a: Aresta, u: Vertice, v: Vertice) -> None:
         a.incid = (u, v)
 
         if (u in v.adj) or (v in u.adj):
@@ -50,11 +49,11 @@ class Grafo:
 
         self.arestas.append(a)
 
-    def cria_e_insere_a(self, id: str, valor: str, u: Vertice, v: Vertice):
+    def cria_e_insere_a(self, id: str, valor: str, u: Vertice, v: Vertice) -> None:
         a = Aresta(id, valor)
         self.insere_a(a, u, v)
 
-    def remove_a(self, a):
+    def remove_a(self, a) -> None:
         self.arestas.remove(a)
 
         a.incid[0].adj[a.incid[1]].remove(a)
@@ -65,7 +64,7 @@ class Grafo:
             a.incid[1].adj.pop(a.incid[0]) if len(a.incid[1].adj[a.incid[0]]) == 0 else None
 
     # Iterável de adjacência
-    def adj(self, v: Vertice):
+    def adj(self, v: Vertice) -> set:
         return v.adj.keys()
 
     # Aresta a partir de dois vértices
@@ -73,14 +72,14 @@ class Grafo:
         return u.adj[v] if v in u.adj else None
 
     # Grau
-    def grau(self, v: Vertice):
+    def grau(self, v: Vertice) -> int:
         return len(v.adj)
 
     # Incidência
-    def vertices_a(self, a: Aresta):
+    def vertices_a(self, a: Aresta) -> tuple:
         return a.incid
 
-    def oposto(self, v: Vertice, a: Aresta):
+    def oposto(self, v: Vertice, a: Aresta) -> Vertice:
         return a.incid[(a.incid.index(v) + 1) % 2]
 
 
