@@ -21,8 +21,8 @@ class Digrafo:
     def insere_v(self, v: VerticeDirigido) -> None:
         self.vertices.append(v)
 
-    def cria_e_insere_v(self, id: str, valor: str) -> None:
-        v = VerticeDirigido(id, valor)
+    def cria_e_insere_v(self, id: str) -> None:
+        v = VerticeDirigido(id)
         self.insere_v(v)
 
     def remove_v(self, v: VerticeDirigido) -> None:
@@ -55,8 +55,8 @@ class Digrafo:
 
         self.arestas.append(a)
 
-    def cria_e_insere_a(self, id: str, valor: str, u: VerticeDirigido, v: VerticeDirigido) -> None:
-        a = ArestaDirigida(id, valor)
+    def cria_e_insere_a(self, id: str, u: VerticeDirigido, v: VerticeDirigido) -> None:
+        a = ArestaDirigida(id)
         self.insere_a(a, u, v)
 
     def remove_a(self, a: ArestaDirigida) -> None:
@@ -122,17 +122,17 @@ def printar_vertices(g: Digrafo):
 
 def main():
     g = Digrafo()
-    g.cria_e_insere_v('v1', 'vA')
-    g.cria_e_insere_v('v2', 'vB')
-    g.cria_e_insere_v('v3', 'vC')
-    g.cria_e_insere_v('v4', 'vD')
-    g.cria_e_insere_v('v5', 'vE')
-    g.cria_e_insere_a('a1', 'aA', g.vertices[0], g.vertices[1])
-    g.cria_e_insere_a('a2', 'aB', g.vertices[0], g.vertices[3])
-    g.cria_e_insere_a('a3', 'aC', g.vertices[1], g.vertices[3])
-    g.cria_e_insere_a('a4', 'aD', g.vertices[3], g.vertices[0])
-    g.cria_e_insere_a('a5', 'aE', g.vertices[3], g.vertices[4])
-    g.cria_e_insere_a('a6', 'aF', g.vertices[3], g.vertices[4])
+    g.cria_e_insere_v('v1')
+    g.cria_e_insere_v('v2')
+    g.cria_e_insere_v('v3')
+    g.cria_e_insere_v('v4')
+    g.cria_e_insere_v('v5')
+    g.cria_e_insere_a('a1', g.vertices[0], g.vertices[1])
+    g.cria_e_insere_a('a2', g.vertices[0], g.vertices[3])
+    g.cria_e_insere_a('a3', g.vertices[1], g.vertices[3])
+    g.cria_e_insere_a('a4', g.vertices[3], g.vertices[0])
+    g.cria_e_insere_a('a5', g.vertices[3], g.vertices[4])
+    g.cria_e_insere_a('a6', g.vertices[3], g.vertices[4])
     
     # Teste 1
     # for vert in g.vertices:

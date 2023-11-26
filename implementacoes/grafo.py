@@ -21,8 +21,8 @@ class Grafo:
     def insere_v(self, v: Vertice) -> None:
         self.vertices.append(v)
 
-    def cria_e_insere_v(self, id: str, valor: str) -> None:
-        v = Vertice(id, valor)
+    def cria_e_insere_v(self, id: str) -> None:
+        v = Vertice(id)
         self.insere_v(v)
 
     def remove_v(self, v: Vertice) -> None:
@@ -49,8 +49,8 @@ class Grafo:
 
         self.arestas.append(a)
 
-    def cria_e_insere_a(self, id: str, valor: str, u: Vertice, v: Vertice) -> None:
-        a = Aresta(id, valor)
+    def cria_e_insere_a(self, id: str, u: Vertice, v: Vertice) -> None:
+        a = Aresta(id)
         self.insere_a(a, u, v)
 
     def remove_a(self, a) -> None:
@@ -85,17 +85,17 @@ class Grafo:
 
 def main():
     g = Grafo()
-    g.cria_e_insere_v('v1', 'vA')
-    g.cria_e_insere_v('v2', 'vB')
-    g.cria_e_insere_v('v3', 'vC')
-    g.cria_e_insere_v('v4', 'vD')
-    g.cria_e_insere_v('v5', 'vE')
-    g.cria_e_insere_a('a1', 'aA', g.vertices[0], g.vertices[1])
-    g.cria_e_insere_a('a2', 'aB', g.vertices[0], g.vertices[3])
-    g.cria_e_insere_a('a3', 'aC', g.vertices[1], g.vertices[3])
-    g.cria_e_insere_a('a4', 'aD', g.vertices[3], g.vertices[0])
-    g.cria_e_insere_a('a5', 'aE', g.vertices[3], g.vertices[4])
-    g.cria_e_insere_a('a6', 'aF', g.vertices[3], g.vertices[4])
+    g.cria_e_insere_v('v1')
+    g.cria_e_insere_v('v2')
+    g.cria_e_insere_v('v3')
+    g.cria_e_insere_v('v4')
+    g.cria_e_insere_v('v5')
+    g.cria_e_insere_a('a1', g.vertices[0], g.vertices[1])
+    g.cria_e_insere_a('a2', g.vertices[0], g.vertices[3])
+    g.cria_e_insere_a('a3', g.vertices[1], g.vertices[3])
+    g.cria_e_insere_a('a4', g.vertices[3], g.vertices[0])
+    g.cria_e_insere_a('a5', g.vertices[3], g.vertices[4])
+    g.cria_e_insere_a('a6', g.vertices[3], g.vertices[4])
     
     # Teste 1
     # for vert in g.vertices:
