@@ -10,6 +10,7 @@ class Aresta:
     def __init__(self, id: str):
         self.id = id
         self.incid = tuple()
+        self.custo = 1
 
     def __str__(self):
         return f'<({self.incid[0].id} -- {self.incid[1].id}) {self.id}>'
