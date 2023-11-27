@@ -18,55 +18,52 @@ class Digrafo:
         return self.arestas
 
     # Inserção e remoção de vértices
-    def insere_v(self, v: VerticeDirigido) -> None:
-        self.vertices.append(v)
+    def insere_v(self, v: VerticeDirigido) -> VerticeDirigido:
+        return self.vertices.append(v)
 
-    def cria_e_insere_v(self, id: str) -> None:
+    def cria_e_insere_v(self, id: str) -> VerticeDirigido:
         v = VerticeDirigido(id)
-        self.insere_v(v)
+        return self.insere_v(v)
 
-    def remove_v(self, v: VerticeDirigido) -> None:
+    def remove_v(self, v: VerticeDirigido) -> VerticeDirigido:
         self.vertices.remove(v)
-
         for vert_suc in v.suc.keys():
             vert_suc.ant.pop(v)
-
         for vert_ant in v.ant.keys():
             vert_ant.suc.pop(v)
-
         for arestas_saida in v.suc.values():
             for aresta_saida in arestas_saida:
                 self.arestas.remove(aresta_saida)
-
         for arestas_entrada in v.ant.values():
             for aresta_entrada in arestas_entrada:
                 self.arestas.remove(aresta_entrada)
+        return v
 
     # Inserção e remoção de arestas
-    def insere_a(self, a: ArestaDirigida, u: VerticeDirigido, v: VerticeDirigido) -> None:
+    def insere_a(self, a: ArestaDirigida, u: VerticeDirigido, v: VerticeDirigido) -> ArestaDirigida:
         a.incid = (u, v)
-
         if (u in v.ant) or (v in u.suc):
             u.suc[v].append(a)
             v.ant[u].append(a)
         else:
             u.suc[v] = [a]
             v.ant[u] = [a]
-
         self.arestas.append(a)
+        return a
 
-    def cria_e_insere_a(self, id: str, u: VerticeDirigido, v: VerticeDirigido) -> None:
+    def cria_e_insere_a(self, id: str, u: VerticeDirigido, v: VerticeDirigido) -> ArestaDirigida:
         a = ArestaDirigida(id)
-        self.insere_a(a, u, v)
+        return self.insere_a(a, u, v)
 
-    def remove_a(self, a: ArestaDirigida) -> None:
+    def remove_a(self, a: ArestaDirigida) -> ArestaDirigida:
         self.arestas.remove(a)
-
         a.incid[0].suc[a.incid[1]].remove(a)
-        a.incid[0].suc.pop(a.incid[1]) if len(a.incid[0].suc[a.incid[1]]) == 0 else None
-
+        if len(a.incid[0].suc[a.incid[1]]) == 0:
+            a.incid[0].suc.pop(a.incid[1])
         a.incid[1].ant[a.incid[0]].remove(a)
-        a.incid[1].ant.pop(a.incid[0]) if len(a.incid[1].ant[a.incid[0]]) == 0 else None
+        if len(a.incid[1].ant[a.incid[0]]) == 0:
+            a.incid[1].ant.pop(a.incid[0])
+        return a
 
     # Iterável de adjacência
     def adj(self, v: VerticeDirigido) -> set:

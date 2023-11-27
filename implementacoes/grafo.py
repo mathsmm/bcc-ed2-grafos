@@ -18,50 +18,51 @@ class Grafo:
         return self.arestas
 
     # Inserção e remoção de vértices
-    def insere_v(self, v: Vertice) -> None:
+    def insere_v(self, v: Vertice) -> Vertice:
         self.vertices.append(v)
+        return v
 
-    def cria_e_insere_v(self, id: str) -> None:
+    def cria_e_insere_v(self, id: str) -> Vertice:
         v = Vertice(id)
-        self.insere_v(v)
+        return self.insere_v(v)
 
-    def remove_v(self, v: Vertice) -> None:
+    def remove_v(self, v: Vertice) -> Vertice:
         self.vertices.remove(v)
-
         for vert_adj in v.adj.keys():
             vert_adj.adj.pop(v)
-        
         for arestas in v.adj.values():
             for aresta in arestas:
                 self.arestas.remove(aresta)
-
+        return v
 
     # Inserção e remoção de arestas
-    def insere_a(self, a: Aresta, u: Vertice, v: Vertice) -> None:
+    def insere_a(self, a: Aresta, u: Vertice, v: Vertice) -> Aresta:
         a.incid = (u, v)
-
         if (u in v.adj) or (v in u.adj):
             u.adj[v].append(a)
-            v.adj[u].append(a) if u != v else None
+            if u != v:
+                v.adj[u].append(a)
         else:
             u.adj[v] = [a]
-            v.adj[u] = [a] if u != v else None
-
+            if u != v:
+                v.adj[u] = [a]
         self.arestas.append(a)
+        return a
 
-    def cria_e_insere_a(self, id: str, u: Vertice, v: Vertice) -> None:
+    def cria_e_insere_a(self, id: str, u: Vertice, v: Vertice) -> Aresta:
         a = Aresta(id)
-        self.insere_a(a, u, v)
+        return self.insere_a(a, u, v)
 
-    def remove_a(self, a) -> None:
+    def remove_a(self, a) -> Aresta:
         self.arestas.remove(a)
-
         a.incid[0].adj[a.incid[1]].remove(a)
-        a.incid[0].adj.pop(a.incid[1]) if len(a.incid[0].adj[a.incid[1]]) == 0 else None
-
+        if len(a.incid[0].adj[a.incid[1]]) == 0:
+            a.incid[0].adj.pop(a.incid[1])
         if a.incid[0] != a.incid[1]:
             a.incid[1].adj[a.incid[0]].remove(a)
-            a.incid[1].adj.pop(a.incid[0]) if len(a.incid[1].adj[a.incid[0]]) == 0 else None
+            if len(a.incid[1].adj[a.incid[0]]) == 0:
+                a.incid[1].adj.pop(a.incid[0])
+        return a
 
     # Iterável de adjacência
     def adj(self, v: Vertice) -> set:
@@ -81,6 +82,25 @@ class Grafo:
 
     def oposto(self, v: Vertice, a: Aresta) -> Vertice:
         return a.incid[(a.incid.index(v) + 1) % 2]
+
+    def a_ordenadas_custo(self):
+        l = self.arestas
+        exchanges = True
+        passnum = self.get_tamanho() - 1
+        while passnum > 0 and exchanges:
+            exchanges = False
+            for i in range(passnum):
+                if l[i].custo > l[i+1].custo:
+                    exchanges = True
+                    l[i], l[i+1] = l[i+1], l[1]
+            passnum = passnum-1
+        return l
+
+    def get_v_por_id(self, id: str) -> Vertice | None:
+        for v in self.vertices:
+            if v.id == id:
+                return v
+        return None
 
 
 def main():

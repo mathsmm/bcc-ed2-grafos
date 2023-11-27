@@ -10,10 +10,10 @@ class Fila:
 
     def remove(self) -> Vertice:
         return self.l.pop(0) if len(self.l) > 0 else None
-    
+
     def vazio(self) -> bool:
         return len(self.l) == 0
-    
+
 class Tempo:
     def __init__(self):
         self.tempo = 0
